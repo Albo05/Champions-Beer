@@ -1,0 +1,31 @@
+Dynamo Zagabria;Chelsea;1-0;E;Steamford Bridge;06/09/2022;21
+Salisburga;Milan;1-1;E;Sansiro;06/09/2022;21
+Celtic;Real Madrid;0-3;F;Celtic Park;06/09/2022;21
+Lipsia;Shakhatar Donetsk;1-4;F;Red Bull Arena Liepzing;06/09/2022;21
+Borussia Dortmund;Copenaghen;3-0;G;Westfalenstadion;06/09/2022;21
+Siviglia;Manchester City;0-4;G;Ramon Sanchez Pizjuan;06/09/22;21
+Benfica;Maccabi Halifa;2-0;H;Da Luz;06/09/2022;21
+Paris Saint-Germain;Juventus;2-1;H;Parck Des Princes;06/09/2022;21
+Ajax;Ramgers;4-0;A;Amsterdam Arena;07/09/2022;19
+Napoli;Liverpool;4-1;A;Diego Armando Maradona;07/09/2022;21
+Atletico Madrid;FC Porto;2-1;B;Wanda Metropolitano;07/09/2022;21
+Bruges;Bayer Leverkusen;1-0;B;Jan Breydel Stadium;07/09/2022;21
+Barcellona;Victoria Plzen;5-1;C;Camp Nou;07/09/2022;21
+Inter;Bayern Monaco;0-2;C;San Siro;07/09/2022;21
+Eintrach Francoforte;Sporting Lisbona;0-3;D;Deutsche Bank Park;07/09/2022;21
+Liverpool;Ajax;2-1;A;Anfield;13/09/2022;21
+Bayern Leverkusen;Atetico Madrid;2-0;B;Bay Arena;13/09/2022;21
+FC Porto;Bruges;0-4;B;Estadio Do Dragao;13/09/2022;21
+Viktoria Plzen;Inter;0-2;C;Doosan Arena;13/09/2022;21
+Bayern Monaco;Barcellona;2-0;C;Allianz Arena;13/09/2022;21
+Sporting Lisbona;Tottenham;2-0;D;Estadio Jose Alvalade;13/09/2022;21
+Marsiglia;Eintracht Francoforte;0-1;D;Stadio Velodrome;13/09/2022;21
+Rangers;Napoli;0-3;A;Inox Stadium;14/09/2022;21
+Milan;Dinamo Zagabria;3-1;E;San Siro;14/09/2022;21
+Chelsea;Salisburgo;1-1;E;Stanford Bridge;14/09/2022;21
+Shakhtar Donetsk;Celtic;1-1;F;Stadio Olimpico;14/09/2022;21
+Real Madrid;Lipsia;2-0;F;Stadio Santiago Bernabeu;14/09/2022;21
+Copenaghen;Siviglia;0-0;G;Stadio Parken;14/09/2022;21
+Manchester City;Borussia Dortmund;2-1;G;Etihad Stadium;14/09/2022;21
+Juventus;Benfica;1-2;H;Allianz Stadium;14/09/2022;21
+Maccabi Halifa;Paris Saint-Germain;1-3;H;Sammy Ofer;14/09/2022;21
