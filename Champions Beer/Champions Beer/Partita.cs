@@ -40,10 +40,11 @@ namespace Champions_Beer
             results[0] = Convert.ToInt32(risultati[0]);
             results[1] = Convert.ToInt32(risultati[1]);
             if (results[0] > results[1])
-            {
                 return sq1.ToString();
-            }
-            return sq2.ToString();
+            else if (results[1] > results[0])
+                return sq2.ToString();
+            else
+                return "pareggio";
         }
 
         public override string ToString()

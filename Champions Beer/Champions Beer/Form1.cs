@@ -197,6 +197,68 @@ namespace Champions_Beer
             label13.Text = appo2;
         }
 
+        public void classifica()
+        {
+            List <string> appo = new List <string>();
+            for (int i = 0; i < match.Count; i++)
+            {
+                appo.Add(match[i].squadra1.ToString());
+                appo.Add(match[i].squadra2.ToString());
+            }
+            string[] appo2 = appo.ToArray();
+            appo.Clear();
+            for (int i = 0; i < appo2.Length; i++)
+            {
+                bool giaPresente = false;
+                for (int j = 0; j < appo.Count; j++)
+                {
+                    if (appo2[i] == appo[j])
+                        giaPresente = true;
+                }
+                if (!giaPresente)
+                {
+                    appo.Add(appo2[i]);
+                }
+            }
+            string[] squadre = appo.ToArray();
+            appo.Clear();
+            int[] vittorie = new int[squadre.Length];
+            for (int i = 0; i < match.Count; i++)
+            {
+                for (int j = 0; j < squadre.Length; j++)
+                {
+                    if (match[i].vincitore() == squadre[j])
+                        vittorie[j] += 2;
+                    else if (match[i].vincitore() == "pareggio")
+                        vittorie[j]++;
+                }
+            }
+            for (int i = 0; i < vittorie.Length; i++)
+            {
+                for (int j = 0; j < vittorie.Length; j++)
+                {
+                    if(vittorie[i] > vittorie[j])
+                    {
+                        int appo3 = vittorie[i];
+                        vittorie[i] = vittorie[j];
+                        vittorie[j] = appo3;
+                        string appo4 = squadre[i];
+                        squadre[i] = squadre[j];
+                        squadre[j] = appo4;
+                    }
+                }
+            }
+            string appo5 = "";
+            for (int i = 0; i < squadre.Length; i++)
+            {
+                appo5 += $"{squadre[i]}: {vittorie[i]}\n";
+            }
+            label2.Text = squadre[0];
+            label3.Text = squadre[1];
+            label2.Text = squadre[2];
+            label14.Text = appo5;
+        }
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
@@ -272,6 +334,7 @@ namespace Champions_Beer
             panel5.Visible = false;
             panel3.Visible = false;
             panel4.Visible = false;
+            classifica();
         }
 
         private void button8_Click(object sender, EventArgs e)
