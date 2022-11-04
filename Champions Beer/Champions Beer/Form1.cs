@@ -129,17 +129,23 @@ namespace Champions_Beer
 
         public void caricaPartite()
         {
-            int index = comboBox3.TabIndex;
+            int index = comboBox3.SelectedIndex;
             textBox1.Text = match[index].squadra1.ToString();
+            textBox1.Invalidate();
             textBox2.Text = match[index].squadra2.ToString();
+            textBox2.Invalidate();
             string[] appo = match[index].risultato.Split('-');
             textBox3.Text = appo[0];
+            textBox3.Invalidate();
             textBox4.Text = appo[1];
+            textBox4.Invalidate();
             textBox5.Text = match[index].stadio;
+            textBox5.Invalidate();
             textBox6.Text = Convert.ToString(match[index].ore);
+            textBox6.Invalidate();
             textBox7.Text = Convert.ToString(match[index].giorno.ToShortDateString());
+            textBox7.Invalidate();
         }
-
         public void giornate()
         {
             DateTime giorno = dateTimePicker1.Value;
@@ -171,6 +177,7 @@ namespace Champions_Beer
             }
             string[] doppie = appo.ToArray();
             appo.RemoveRange(0, doppie.Length);
+            string appo2 = "";
             for (int i = 0; i < doppie.Length; i++)
             {
                 bool giaPresente = false;
@@ -179,12 +186,15 @@ namespace Champions_Beer
                     if (doppie[i] == appo[j])
                         giaPresente = true;
                 }
-                if (giaPresente)
+                if (!giaPresente)
                 {
                     appo.Add(doppie[i]);
                     listBox2.Items.Add(doppie[i]);
+                    appo2 += $"{doppie[i]}\n";
                 }
             }
+
+            label13.Text = appo2;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -262,6 +272,16 @@ namespace Champions_Beer
             panel5.Visible = false;
             panel3.Visible = false;
             panel4.Visible = false;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            gironi();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            button8.Enabled = true;
         }
     }
 }
