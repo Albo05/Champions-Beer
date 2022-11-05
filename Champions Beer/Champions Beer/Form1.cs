@@ -182,16 +182,38 @@ namespace Champions_Beer
             {
                 bool giaPresente = false;
                 for (int j = 0; j < appo.Count; j++)
-                {
                     if (doppie[i] == appo[j])
                         giaPresente = true;
-                }
                 if (!giaPresente)
-                {
                     appo.Add(doppie[i]);
-                    listBox2.Items.Add(doppie[i]);
-                    appo2 += $"{doppie[i]}\n";
+            }
+            int[] risultati = new int[appo.Count];
+            for (int i = 0; i < match.Count; i++)
+                for (int j = 0; j < appo.Count; j++)
+                {
+                    if (match[i].vincitore() == appo[j])
+                        risultati[j] += 3;
+                    else if (match[i].vincitore() == "pareggio")
+                        risultati[j]++;
                 }
+            for (int i = 0; i < appo.Count; i++)
+            {
+                for (int j = 0; j < appo.Count; j++)
+                {
+                    if (risultati[i] > risultati[j])
+                    {
+                        int appoRis = risultati[i];
+                        risultati[i] = risultati[j];
+                        risultati[j] = appoRis;
+                        string appoSqd = appo[i];
+                        appo[i] = appo[j];
+                        appo[j] = appoSqd;
+                    }
+                }
+            }
+            for (int i = 0; i < appo.Count; i++)
+            {
+                appo2 += $"{appo[i]}: {risultati[i]}\n";
             }
 
             label13.Text = appo2;
@@ -228,7 +250,7 @@ namespace Champions_Beer
                 for (int j = 0; j < squadre.Length; j++)
                 {
                     if (match[i].vincitore() == squadre[j])
-                        vittorie[j] += 2;
+                        vittorie[j] += 3;
                     else if (match[i].vincitore() == "pareggio")
                         vittorie[j]++;
                 }
