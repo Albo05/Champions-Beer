@@ -47,6 +47,21 @@ namespace Champions_Beer
                 return "pareggio";
         }
 
+        public int goalsegnati(string a)
+        {
+            string[] risultati = ris.Split('-');
+            if (sq1.ToString() == a)
+                return (Convert.ToInt32(risultati[0]));
+            return (Convert.ToInt32(risultati[1]));
+        }
+        public int goalsubiti(string a)
+        {
+            string[] risultati = ris.Split('-');
+            if (sq1.ToString() == a)
+                return (Convert.ToInt32(risultati[1]));
+            return (Convert.ToInt32(risultati[0]));
+        }
+
         public override string ToString()
         {
             string s = $"{squadra1} - {squadra2}";

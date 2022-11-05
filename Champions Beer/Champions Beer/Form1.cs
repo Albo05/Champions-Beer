@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Http.Headers;
+using System.Threading;
 
 namespace Champions_Beer
 {
@@ -123,7 +124,6 @@ namespace Champions_Beer
             {
                 indicePartite[i] = $"{match[i].squadra1.ToString()}-{match[i].squadra2.ToString()}";
                 comboBox3.Items.Add(indicePartite[i]);
-                match.Add(match[i]);
             }
         }
 
@@ -177,7 +177,7 @@ namespace Champions_Beer
             }
             string[] doppie = appo.ToArray();
             appo.RemoveRange(0, doppie.Length);
-            string appo2 = "";
+            string appo2 = "Squadra, Punti, Goal fatti, Goal subiti\n";
             for (int i = 0; i < doppie.Length; i++)
             {
                 bool giaPresente = false;
@@ -189,13 +189,22 @@ namespace Champions_Beer
             }
             int[] risultati = new int[appo.Count];
             for (int i = 0; i < match.Count; i++)
+            {
+                string win = match[i].vincitore();
+                int h = 0;
                 for (int j = 0; j < appo.Count; j++)
                 {
-                    if (match[i].vincitore() == appo[j])
-                        risultati[j] += 3;
-                    else if (match[i].vincitore() == "pareggio")
-                        risultati[j]++;
+                    if (match[i].squadra1.ToString() == appo[j] || match[i].squadra2.ToString() == appo[j])
+                    {
+                        if (win == appo[j])
+                            risultati[j] += 3;
+                        else if (win == "pareggio")
+                            risultati[j]++;
+                    }
                 }
+            }
+            int goal1 = 0;
+            int subiti1 = 0;
             for (int i = 0; i < appo.Count; i++)
             {
                 for (int j = 0; j < appo.Count; j++)
@@ -209,76 +218,169 @@ namespace Champions_Beer
                         appo[i] = appo[j];
                         appo[j] = appoSqd;
                     }
+                    else if (risultati[i] == risultati[j] && scambia(appo[i], appo[j]))
+                    {
+                        int appoRis = risultati[i];
+                        risultati[i] = risultati[j];
+                        risultati[j] = appoRis;
+                        string appoSqd = appo[i];
+                        appo[i] = appo[j];
+                        appo[j] = appoSqd;
+                    }
                 }
             }
             for (int i = 0; i < appo.Count; i++)
             {
-                appo2 += $"{appo[i]}: {risultati[i]}\n";
+                for (int j = 0; j < match.Count; j++)
+                {
+                    if (match[j].squadra1.ToString() == appo[i] || match[j].squadra2.ToString() == appo[i])
+                    {
+                        goal1 += match[j].goalsegnati(appo[i]);
+                        subiti1 += match[j].goalsubiti(appo[i]);
+                    }
+                }
+                appo2 += $"{appo[i]}: {risultati[i]}, {goal1}, {subiti1}\n";
+                goal1 = 0;
+                subiti1 = 0;
             }
-
             label13.Text = appo2;
         }
 
         public void classifica()
         {
-            List <string> appo = new List <string>();
-            for (int i = 0; i < match.Count; i++)
+            //classifica nuova
+            Label[] lbl = { label30, label31, label32, label33, label34, label35, label36, label37 };
+            char[] gironi = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+            foreach (char gir in gironi)
             {
-                appo.Add(match[i].squadra1.ToString());
-                appo.Add(match[i].squadra2.ToString());
-            }
-            string[] appo2 = appo.ToArray();
-            appo.Clear();
-            for (int i = 0; i < appo2.Length; i++)
-            {
-                bool giaPresente = false;
-                for (int j = 0; j < appo.Count; j++)
+                List<string> appo = new List<string>();
+                for (int i = 0; i < match.Count; i++)
                 {
-                    if (appo2[i] == appo[j])
-                        giaPresente = true;
-                }
-                if (!giaPresente)
-                {
-                    appo.Add(appo2[i]);
-                }
-            }
-            string[] squadre = appo.ToArray();
-            appo.Clear();
-            int[] vittorie = new int[squadre.Length];
-            for (int i = 0; i < match.Count; i++)
-            {
-                for (int j = 0; j < squadre.Length; j++)
-                {
-                    if (match[i].vincitore() == squadre[j])
-                        vittorie[j] += 3;
-                    else if (match[i].vincitore() == "pareggio")
-                        vittorie[j]++;
-                }
-            }
-            for (int i = 0; i < vittorie.Length; i++)
-            {
-                for (int j = 0; j < vittorie.Length; j++)
-                {
-                    if(vittorie[i] > vittorie[j])
+                    if (match[i].squadra1.girone == gir)
                     {
-                        int appo3 = vittorie[i];
-                        vittorie[i] = vittorie[j];
-                        vittorie[j] = appo3;
-                        string appo4 = squadre[i];
-                        squadre[i] = squadre[j];
-                        squadre[j] = appo4;
+                        appo.Add(match[i].squadra1.ToString());
+                        appo.Add(match[i].squadra2.ToString());
                     }
                 }
+                string[] doppie = appo.ToArray();
+                appo.RemoveRange(0, doppie.Length);
+                string appo2 = "";
+                for (int i = 0; i < doppie.Length; i++)
+                {
+                    bool giaPresente = false;
+                    for (int j = 0; j < appo.Count; j++)
+                        if (doppie[i] == appo[j])
+                            giaPresente = true;
+                    if (!giaPresente)
+                        appo.Add(doppie[i]);
+                }
+                int[] risultati = new int[appo.Count];
+                for (int i = 0; i < match.Count; i++)
+                {
+                    string win = match[i].vincitore();
+                    int h = 0;
+                    for (int j = 0; j < appo.Count; j++)
+                    {
+                        if (match[i].squadra1.ToString() == appo[j] || match[i].squadra2.ToString() == appo[j])
+                        {
+                            if (win == appo[j])
+                                risultati[j] += 3;
+                            else if (win == "pareggio")
+                                risultati[j]++;
+                        }
+                    }
+                }
+                for (int i = 0; i < appo.Count; i++)
+                {
+                    for (int j = 0; j < appo.Count; j++)
+                    {
+                        if (risultati[i] > risultati[j])
+                        {
+                            int appoRis = risultati[i];
+                            risultati[i] = risultati[j];
+                            risultati[j] = appoRis;
+                            string appoSqd = appo[i];
+                            appo[i] = appo[j];
+                            appo[j] = appoSqd;
+                        }
+                        else if (risultati[i] == risultati[j] && scambia(appo[i], appo[j]))
+                        {
+                            int appoRis = risultati[i];
+                            risultati[i] = risultati[j];
+                            risultati[j] = appoRis;
+                            string appoSqd = appo[i];
+                            appo[i] = appo[j];
+                            appo[j] = appoSqd;
+                        }
+                    }
+                }
+                for (int i = 0; i < appo.Count; i++)
+                {
+                    appo2 += $"{appo[i]}: {risultati[i]}\n";
+                }
+                lbl[gir - 65].Text = appo2;
             }
-            string appo5 = "";
-            for (int i = 0; i < squadre.Length; i++)
+        }
+
+        public bool scambia(string sq1, string sq2)
+        {
+            int goal1 = 0;
+            int goal2 = 0;
+            int subiti1 = 0;
+            int subiti2 = 0;
+            for (int i = 0; i < match.Count; i++)
             {
-                appo5 += $"{squadre[i]}: {vittorie[i]}\n";
+                if (match[i].squadra1.nome == sq1 || match[i].squadra2.nome == sq1)
+                {
+                    goal1 += match[i].goalsegnati(sq1);
+                    subiti1 += match[i].goalsubiti(sq1);
+                }
+                else if (match[i].squadra1.nome == sq2 || match[i].squadra2.nome == sq2)
+                {
+                    goal2 += match[i].goalsegnati(sq2);
+                    subiti2 += match[i].goalsubiti(sq2);
+                }
             }
-            label2.Text = squadre[0];
-            label3.Text = squadre[1];
-            label2.Text = squadre[2];
-            label14.Text = appo5;
+            if(goal1 > goal2)
+                return true;
+            else if(goal1 < goal2)
+                return false;
+            else
+            {
+                if (subiti1 < subiti2)
+                    return false;
+                else if (subiti2 < subiti1)
+                    return true;
+                else
+                {
+                    Random r = new Random();
+                    if (r.Next(0, 2) == 1)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+        }
+
+        public void caricaDate()
+        {
+            List<DateTime> date = new List<DateTime>();
+            for (int i = 0; i < match.Count; i++)
+            {
+                bool presente = false;
+                for (int j = 0; j < date.Count; j++)
+                {
+                    if (match[i].giorno.ToShortDateString() == date[j].ToShortDateString())
+                    {
+                        presente = true;
+                    }
+                }
+                if (!presente)
+                {
+                    date.Add(match[i].giorno);
+                    comboBox2.Items.Add(match[i].giorno.ToShortTimeString());
+                }
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -335,11 +437,7 @@ namespace Champions_Beer
             panel5.Visible = false;
             panel3.Visible = true;
             panel4.Visible = false;
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-            button7.Enabled = true;
+            caricaDate();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -359,14 +457,9 @@ namespace Champions_Beer
             classifica();
         }
 
-        private void button8_Click(object sender, EventArgs e)
-        {
-            gironi();
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button8.Enabled = true;
+            gironi();
         }
     }
 }
