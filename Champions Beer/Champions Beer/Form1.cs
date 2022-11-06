@@ -17,6 +17,7 @@ namespace Champions_Beer
     public partial class Form1 : Form
     {
         List<Partita> match = new List<Partita>();
+        int index;
         public Form1()
         {
             InitializeComponent();
@@ -129,16 +130,27 @@ namespace Champions_Beer
 
         public void caricaPartite()
         {
-            int index = comboBox3.SelectedIndex;
+            index = comboBox3.SelectedIndex;
             textBox1.Text = match[index].squadra1.ToString();
             textBox1.Invalidate();
             textBox2.Text = match[index].squadra2.ToString();
             textBox2.Invalidate();
-            string[] appo = match[index].risultato.Split('-');
-            textBox3.Text = appo[0];
-            textBox3.Invalidate();
-            textBox4.Text = appo[1];
-            textBox4.Invalidate();
+            if (match[index].risultato != "a-a")
+            {
+                button6.Visible = false;
+                string[] appo = match[index].risultato.Split('-');
+                textBox3.Text = appo[0];
+                textBox3.Invalidate();
+                textBox4.Text = appo[1];
+                textBox4.Invalidate();
+            }
+            else
+            {
+                button6.Visible = true;
+                panel2.Visible = true;
+                label2.Text = match[index].squadra1.ToString();
+                label3.Text = match[index].squadra2.ToString();
+            }
             textBox5.Text = match[index].stadio;
             textBox5.Invalidate();
             textBox6.Text = Convert.ToString(match[index].ore);
@@ -148,19 +160,16 @@ namespace Champions_Beer
         }
         public void giornate()
         {
-            DateTime giorno = dateTimePicker1.Value;
+            DateTime giorno = Convert.ToDateTime(comboBox2.SelectedItem);
             string partite = "";
             for (int i = 0; i < match.Count; i++)
             {
                 if (match[i].giorno.ToShortDateString() == giorno.ToShortDateString())
                 {
-                    partite += $"{match[i].ToString()}\n";
+                    partite += $"{match[i].ToString()}  ->  {match[i].risultato}\n";
                 }
             }
-            if (partite.Length == 0)
-                label12.Text = "Non sono state giocate partite in questa data";
-            else
-                label12.Text = partite;
+            label12.Text = partite;
         }
 
         public void gironi()
@@ -364,6 +373,7 @@ namespace Champions_Beer
 
         public void caricaDate()
         {
+            svuotaComboBox(comboBox2);
             List<DateTime> date = new List<DateTime>();
             for (int i = 0; i < match.Count; i++)
             {
@@ -378,8 +388,114 @@ namespace Champions_Beer
                 if (!presente)
                 {
                     date.Add(match[i].giorno);
-                    comboBox2.Items.Add(match[i].giorno.ToShortTimeString());
+                    comboBox2.Items.Add(match[i].giorno.ToShortDateString());
                 }
+            }
+        }
+
+        public void tutteSquadre()
+        {
+            List<string> squadre = new List<string>();
+            for (int i = 0; i < match.Count; i++)
+            {
+                bool presente1 = false;
+                bool presente2 = false;
+                for (int j = 0; j < squadre.Count; j++)
+                {
+                    if (match[i].squadra1.ToString() == squadre[j])
+                        presente1 = true;
+                    if (match[i].squadra1.ToString() == squadre[j])
+                        presente2 = true;
+                } 
+                if (!presente1)
+                {
+                    squadre.Add(match[i].squadra1.ToString());
+                    comboBox4.Items.Add(match[i].squadra1.ToString());
+                }
+                if (!presente2)
+                {
+                    squadre.Add(match[i].squadra2.ToString());
+                    comboBox4.Items.Add(match[i].squadra2.ToString());
+                }
+            }
+        }
+
+        public char gironeSquadra(ComboBox si)
+        {
+            char girone = 'a';
+            for (int i = 0; i < match.Count; i++)
+            {
+                if (match[i].squadra1.ToString() == si.Text || match[i].squadra2.ToString() == si.Text)
+                    return match[i].squadra1.girone;
+            }
+            return girone;
+        }
+
+        public void squadrePerGirone()
+        {
+            char gir = gironeSquadra(comboBox4);
+            List<string> appo = new List<string>();
+            for (int i = 0; i < match.Count; i++)
+            {
+                if (match[i].squadra1.girone == gir)
+                {
+                    appo.Add(match[i].squadra1.ToString());
+                    appo.Add(match[i].squadra2.ToString());
+                }
+            }
+            string[] arr = appo.ToArray();
+            appo.Clear();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                bool presente = false;
+                for (int j = 0; j < appo.Count; j++)
+                {
+                    if(arr[i] == appo[j])
+                        presente = true;
+                }
+                if (!presente)
+                    appo.Add(arr[i]);
+            }
+            for (int i = 0; i < appo.Count; i++)
+            {
+                if(appo[i] != comboBox4.Text)
+                    comboBox5.Items.Add(appo[i]);
+            }
+        }
+
+        public void svuotaComboBox(ComboBox a)
+        {
+            a.Items.Clear();
+        }
+
+        public void aggiungi()
+        {
+            string stadio = textBox14.Text;
+            string ore = textBox15.Text;
+            if(comboBox4.Text != null && comboBox5.Text != null && !(String.IsNullOrWhiteSpace(textBox14.Text)) && !(String.IsNullOrWhiteSpace(textBox15.Text)) && int.TryParse(textBox15.Text, out int i) && i>=0 && i<=25) 
+            {
+                if(textBox12.Text == null && textBox13.Text == null)
+                {
+                    string a = File.ReadAllText("P1.txt");
+                    string gir = gironeSquadra(comboBox4).ToString();
+                    a += $"\n{comboBox4.Text};{comboBox5.Text};a-a;{gir};{textBox14.Text};{dateTimePicker1.Value.ToShortDateString()};{textBox15}";
+                    File.WriteAllText("P1", a);
+                }
+                else if(textBox12.Text != null && textBox13.Text != null)
+                {
+                    string a = File.ReadAllText("P1.txt");
+                    string gir = gironeSquadra(comboBox4).ToString();
+                    a += $"\n{comboBox4.Text};{comboBox5.Text};{Convert.ToInt32(textBox12.Text)}-{Convert.ToInt32(textBox13.Text)};{gir};{textBox14.Text};{dateTimePicker1.Value.ToShortDateString()};{textBox15}";
+                    File.WriteAllText("P1", a);
+                }
+                else
+                {
+                    MessageBox.Show("Compilare tutti i campi necessari in modo corretto");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Compilare tutti i campi necessari in modo corretto");
             }
         }
 
@@ -415,7 +531,7 @@ namespace Champions_Beer
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            button6.Enabled = true;
+            caricaPartite();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -424,6 +540,8 @@ namespace Champions_Beer
             panel5.Visible = false;
             panel3.Visible = false;
             panel4.Visible = true;
+            panel2.Visible = false;
+            panel6.Visible = false;
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -437,6 +555,7 @@ namespace Champions_Beer
             panel5.Visible = false;
             panel3.Visible = true;
             panel4.Visible = false;
+            panel6.Visible = false;
             caricaDate();
         }
 
@@ -446,6 +565,7 @@ namespace Champions_Beer
             panel5.Visible = true;
             panel3.Visible = false;
             panel4.Visible = false;
+            panel6.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -454,12 +574,66 @@ namespace Champions_Beer
             panel5.Visible = false;
             panel3.Visible = false;
             panel4.Visible = false;
+            panel6.Visible = false;
             classifica();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             gironi();
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            giornate();
+        }
+
+        private void button7_Click_1(object sender, EventArgs e)
+        {
+            label2.Text = match[index].squadra1.ToString();
+            label3.Text = match[index].squadra2.ToString();
+            int a = 0;
+            while (a == 0)
+            {
+                if (int.TryParse(textBox8.Text, out int i) && int.TryParse(textBox9.Text, out int j))
+                {
+                    match[index].risultato = $"{i}-{j}";
+                    panel2.Visible = false;
+                    a = 1;
+                }
+                MessageBox.Show("Inserire dei valori accetabili");
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            comboBox5.Enabled = false;
+            leggiECaricaFile();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+            panel5.Visible = false;
+            panel3.Visible = false;
+            panel4.Visible = false;
+            panel6.Visible = true;
+            svuotaComboBox(comboBox4);
+            svuotaComboBox(comboBox5);
+            tutteSquadre();
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBox5.Enabled = true;
+            svuotaComboBox(comboBox5);
+            squadrePerGirone();
+            comboBox5.SelectedIndex = 0;
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

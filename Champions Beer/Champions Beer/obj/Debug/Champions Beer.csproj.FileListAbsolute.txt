@@ -42,3 +42,14 @@ C:\Users\alber\Desktop\Champions-Beer-main\Champions Beer\Champions Beer\obj\Deb
 \\Mac\Home\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.csproj.CoreCompileInputs.cache
 \\Mac\Home\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.exe
 \\Mac\Home\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.pdb
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\bin\Debug\Champions Beer.exe.config
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\bin\Debug\Champions Beer.exe
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\bin\Debug\Champions Beer.pdb
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.csproj.AssemblyReference.cache
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.csproj.SuggestedBindingRedirects.cache
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions_Beer.Form1.resources
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions_Beer.Properties.Resources.resources
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.csproj.GenerateResource.cache
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.csproj.CoreCompileInputs.cache
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.exe
+C:\Users\alber\Desktop\Champions Beer\Champions Beer\obj\Debug\Champions Beer.pdb

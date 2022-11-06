@@ -37,6 +37,11 @@ namespace Champions_Beer
         {
             string[] risultati = ris.Split('-');
             int[] results = new int[risultati.Length];
+            if (risultati[0] == "a")
+            {
+                risultati[0] = "0";
+                risultati[1] = "0";
+            }
             results[0] = Convert.ToInt32(risultati[0]);
             results[1] = Convert.ToInt32(risultati[1]);
             if (results[0] > results[1])
@@ -50,6 +55,11 @@ namespace Champions_Beer
         public int goalsegnati(string a)
         {
             string[] risultati = ris.Split('-');
+            if (risultati[0] == "a")
+            {
+                risultati[0] = "0";
+                risultati[1] = "0";
+            }
             if (sq1.ToString() == a)
                 return (Convert.ToInt32(risultati[0]));
             return (Convert.ToInt32(risultati[1]));
@@ -57,6 +67,11 @@ namespace Champions_Beer
         public int goalsubiti(string a)
         {
             string[] risultati = ris.Split('-');
+            if (risultati[0] == "a")
+            {
+                risultati[0] = "0";
+                risultati[1] = "0";
+            }
             if (sq1.ToString() == a)
                 return (Convert.ToInt32(risultati[1]));
             return (Convert.ToInt32(risultati[0]));
