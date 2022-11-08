@@ -855,7 +855,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(1450, 969);
+            this.ClientSize = new System.Drawing.Size(1163, 686);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.panel4);
